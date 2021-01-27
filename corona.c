@@ -11,8 +11,9 @@ typedef struct
 
 } dateCode_t;
 
-int code_id()
+int code_id()//funktion för att matta in en id för en tel vi simulerar att vi har en sever
 {
+   
    int id_code;
    bool ceck = true;
    
@@ -26,7 +27,7 @@ int code_id()
    printf("\n");
    printf("=====================================================\n");
 
-    if(id_code == -1)
+    if(id_code == -1)//verifiera att  telefons id har rätt format
     {
        printf("\n");
        printf("=====================================================\n");
@@ -43,9 +44,9 @@ int code_id()
   }
    
    return id_code;
-}
+}//returnerar id (koden)
 
-dateCode_t id_date()
+dateCode_t id_date()//funktion som mattar in datumet om man har varit exponerat
 { 
    
    dateCode_t date;
@@ -62,21 +63,21 @@ dateCode_t id_date()
    return date;
 }
 
-bool ceck_year(dateCode_t real_date)
+bool ceck_year(dateCode_t real_date)//funktion för att verifiera om året är skot rätt
 { 
     
    
-   // is a leap year if divisible by  4 
+   // om det är skott år dividerar med  4 
    if (real_date.year % 4 == 0) 
    {
       return true;
    }
-   //year 2021 or later
+   //år 2021 eller senare
    if (real_date.year < 2021)
    {
       false;
    }
-   //not all years are leap years 
+   //alla år är inte skott år
    else
    {
       return false;
@@ -85,13 +86,13 @@ bool ceck_year(dateCode_t real_date)
 }
 
 
-bool ceck_date(dateCode_t date_c)
+bool ceck_date(dateCode_t date_c)//verifierar om datumet är rätt skott år månad dag
 {
    
-   if (date_c.year < 2021)
+  /* if (date_c.year < 2021)
    {
       return false;
-   }
+   }*/
    
    if (date_c.month < 1 || date_c.month > 12)
    {
@@ -103,7 +104,7 @@ bool ceck_date(dateCode_t date_c)
    }
    else if (date_c.month == 2)
    {
-    if (ceck_year(date_c))
+    if (ceck_year(date_c))//man kallar funktionen ceck year för att god känna om det är rätt år
      {
         return(date_c.day <= 29);    
      }
@@ -128,7 +129,7 @@ bool ceck_date(dateCode_t date_c)
    return true;
 }
 
-int test_positiv()
+int test_positiv()//funktion som skapar corona koden och skikar den i väg
 {
   int code;
   scanf("%d", &code);
@@ -147,7 +148,7 @@ int test_positiv()
 }
 
 
- void corona_alarm()
+ void corona_alarm()//alarm om man har varit exponerat till corona
  {
     bool alarm_menu=true; 
      int alarm;
@@ -186,7 +187,7 @@ int test_positiv()
         alarm_menu =false;
         
      }
-     else
+     else//om man har mattat in fel kod format 
      {
        printf("Eror, enter 0 or 9\n");
        printf("\n");
@@ -237,7 +238,7 @@ int main(void)
       printf("=====================================================\n");
       printf("1. Enter your corona code:");
 
-      codes = test_positiv();
+      codes = test_positiv();//positiv för corona
       printf("=====================================================\n");
     }
     else if (menu_options == 2)
@@ -248,10 +249,10 @@ int main(void)
      while (myDate)
      {  
        dateCode_t date_c;
-       int tel_id = code_id();
+       int tel_id = code_id();//frågar efter coronakod om man har varit exponerad
        date_c = id_date();
 
-       if(ceck_date(date_c))
+       if(ceck_date(date_c))//verifierar att det rätt datum
        {
           printf("\n");
           printf("=====================================================\n");
@@ -272,7 +273,7 @@ int main(void)
    }
     else if (menu_options == 3)
     {
-      corona_alarm();
+      corona_alarm();//alarm att man har varit exponerat och skulle kontakta sjukuset
     }
     else if (menu_options == 4)
     {

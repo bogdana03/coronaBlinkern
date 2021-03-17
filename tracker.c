@@ -12,7 +12,7 @@ date_t my_cut_of_days;
 
 void print_menu()
 {  
-    printf("1. For the registration cod and date:\n");
+    printf("1. Enter opening code and date of registration:\n");
     printf("2. Add a new date and a new phone ID\n");
     printf("3. Display all stored sessions\n");
     printf("4. Delete old date\n");
@@ -174,7 +174,8 @@ void corona_alarm()
 
 
 
-int main()
+int main(int argc, char const *argv[]
+)
 {
     bool done = false;
     int selection = 0;

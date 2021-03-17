@@ -17,6 +17,9 @@ endif
 #%.o: %.c
 #	gcc $(CFLAGS) -c $< -o $@
 
+datee.o: datee.c datee.h
+	gcc $(CFLAGS) -c datee.c -o datee.o 
+
 date.o: date.c date.h
 	gcc $(CFLAGS) -c date.c -o date.o
 

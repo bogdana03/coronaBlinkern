@@ -26,28 +26,37 @@ bool list_is_empty(sessionlist list)
 void list_insert( sessionlist * headptr, session_data data) 
 {  
     sessionlist_node *new_node;
+    sessionlist_node *temp_node;
+
     //aloc data for node.
     new_node = (sessionlist_node *) malloc(sizeof(sessionlist_node));
-    
     //add data into list.
     new_node->data = data;
     
 
     //insert node into a list.
     //Case1: List is empty.
-     if(*headptr ==NULL)
+     if(*headptr ==NULL || is_before(data.date, (*headptr)->data.date))
      {
         DEBUG("list_insert, case 1 - empty list");
-       *headptr = new_node;
-       new_node->next = NULL;
+
+        new_node->next = *headptr;
+        *headptr = new_node;
      }
-      
+       
       //Case2: List is populated.
       else
       {
+           temp_node = *headptr;
+           while (temp_node->next != NULL &&
+                  is_before(temp_node->next->data.date, new_node->data.date))
+           {
+             temp_node = temp_node->next;  
+           }
+           
            DEBUG("list_insert, case 2 -  list has content");
-          new_node->next = *headptr;
-          *headptr = new_node;
+          new_node->next = temp_node->next;
+          temp_node->next = new_node;
       }
 }
 void print_sesion_data(session_data data, FILE *fileptr)

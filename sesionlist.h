@@ -85,4 +85,8 @@ sessionlist list_read_from_file(FILE * fileptr, sessionlist list);
  void remove_all_of_type(sessionlist * listptr, date_t cut_of_day); 
 
  
+
+ 
+
+ 
  

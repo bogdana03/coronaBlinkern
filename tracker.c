@@ -2,6 +2,8 @@
 #include <stdio.h>
 #include "sesionlist.h"
 #include "date.h"
+#include <string.h>
+#include <stdlib.h>
 
 
 sessionlist my_sessions;
@@ -174,8 +176,7 @@ void corona_alarm()
 
 
 
-int main(int argc, char const *argv[]
-)
+int main(int argc, char const *argv[])
 {
     bool done = false;
     int selection = 0;
@@ -183,10 +184,11 @@ int main(int argc, char const *argv[]
     FILE *fileptr;
     my_sessions = list_create();
 
-     fileptr = fopen(filename, "r");
+
+    fileptr = fopen(filename, "r");
     if(fileptr != NULL)
     {
-      my_sessions = list_read_from_file(fileptr, my_sessions);
+       my_sessions = list_read_from_file(fileptr, my_sessions);
        fclose(fileptr);
     }
     else
@@ -194,42 +196,93 @@ int main(int argc, char const *argv[]
       printf("WARINIG, could not open file %s for reading. Starting with empty session list.\n", filename);
     }
 
-    while (!done)
+    if (selection == strcmp("Add", argv[1]))
     {
-        print_menu();
-        selection = prompt_user();
+        session_data interactive;
+        int day;
+        int month;
+        int year;
+        int phoneId;
+        //phoneId = atoi(argv[2]);
+        sscanf(argv[2],"%d", &phoneId);
+        sscanf(argv[3], "%d.%d.%d", &day, &month, &year);
 
-        switch (selection)
-        {
-        case 1:
-           test_positiv();
-           break;
-
-        case 2:
-            add_session();
-            break;
-
-        case 3:
-            print_session();
-            break;
-
-        case 4:
-             remove_all_of_type(&my_sessions, my_cut_of_days);           
-             break;
-
-        case 5:
-             corona_alarm();
-             break;
-
-        case 6:
-             done = true;
-             break;
+        printf("New corona code: [%d]  Date: %d.%d.%d", phoneId, day, month, year);
         
-        default:
-             printf("Incorect input %d\n", selection);
+        interactive.codePhone=phoneId;
+        interactive.date.day=day;
+        interactive.date.month=month;
+        interactive.date.year=year;
+        
+        list_insert(&my_sessions, interactive);
+        fileptr = fopen(filename, "w");
+        if(fileptr != NULL)
+        {
+           list_write_to_file(fileptr, my_sessions);
+           fclose(fileptr);
+        }
+        else
+        {
+           printf("WARINIG, could not open file %s for writing. Session data lost.\n", filename);
+        }
+
+        exit(0);
+    }
+    else if(selection == strcmp("History", argv[1]))
+    {
+      
+      print_session();
+      exit(0);
+    }
+    else if (selection == strcmp("Help", argv[1]))
+    {
+    
+       printf("Commands: Add (code) (day.month.year)\n" 
+                         "History (show history)\n"
+                         "Interactive(Interactive mode)");
+        exit(0);
+    }
+    else if (selection == strcmp("Interactive", argv[1]))
+    {
+         my_sessions = list_read_from_file(fileptr, my_sessions);
+         print_session();
+    
+     while (!done)
+        {
+            print_menu();
+            selection = prompt_user();
+
+            switch (selection)
+            {
+            case 1:
+                test_positiv();
+            break;
+
+            case 2:
+                add_session();
+            break;
+
+            case 3:
+                print_session();
+            break;
+
+            case 4:
+                remove_all_of_type(&my_sessions, my_cut_of_days);           
+            break;
+
+            case 5:
+                 corona_alarm();
+             break;
+
+            case 6:
+                done = true;
+            break;
+        
+            default:
+                printf("Incorect input %d\n", selection);
             break;
         }
-    }
+
     fileptr = fopen(filename, "w");
     if(fileptr != NULL)
     {
@@ -240,6 +293,21 @@ int main(int argc, char const *argv[]
     {
       printf("WARINIG, could not open file %s for writing. Session data lost.\n", filename);
     }
+    }
+    exit(0);
+  }
+
+    fileptr = fopen(filename, "w");
+    if(fileptr != NULL)
+    {
+       list_write_to_file(fileptr, my_sessions);
+       fclose(fileptr);
+    }
+    else
+    {
+      printf("WARINIG, could not open file %s for writing. Session data lost.\n", filename);
+    }
+
    
-    
+  return 0;  
 }
